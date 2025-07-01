@@ -47,14 +47,8 @@ const DudumchiCharacter = ({ mood, isGoalMet, todayUsage, dailyGoal }: DudumchiC
     }
   };
 
-  const getFoxImage = () => {
-    return (
-      <img 
-        src="https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=400&h=400&fit=crop&crop=face"
-        alt="두둠치 여우"
-        className="w-32 h-32 rounded-full object-cover mx-auto"
-      />
-    );
+  const getFoxEmoji = () => {
+    return "🦊";
   };
 
   const getMoodMessage = () => {
@@ -75,7 +69,9 @@ const DudumchiCharacter = ({ mood, isGoalMet, todayUsage, dailyGoal }: DudumchiC
         <div className="text-center">
           <div className={`transition-transform duration-1000 ${isAnimating ? 'scale-110' : 'scale-100'}`}>
             <div className="bg-gradient-to-b from-orange-50 to-orange-100 rounded-lg p-6 border-2 border-orange-200 shadow-inner">
-              {getFoxImage()}
+              <div className="text-8xl mb-4">
+                {getFoxEmoji()}
+              </div>
             </div>
           </div>
           <div className="mt-4 p-3 bg-white/70 rounded-lg border border-orange-200">
