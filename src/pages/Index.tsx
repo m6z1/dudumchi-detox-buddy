@@ -17,6 +17,9 @@ const Index = () => {
   const [dailyGoal, setDailyGoal] = useState(4); // hours
   const [dudumchiMood, setDudumchiMood] = useState('happy');
   const [points, setPoints] = useState(150);
+  const [currentEmoji, setCurrentEmoji] = useState('🦊');
+
+  const animalEmojis = ['🦊', '🐱', '🐶', '🐰', '🐹', '🐨', '🐼', '🐸', '🐯', '🦁'];
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -24,6 +27,12 @@ const Index = () => {
     }, 1000);
     return () => clearInterval(timer);
   }, []);
+
+  const handleEmojiChange = () => {
+    const currentIndex = animalEmojis.indexOf(currentEmoji);
+    const nextIndex = (currentIndex + 1) % animalEmojis.length;
+    setCurrentEmoji(animalEmojis[nextIndex]);
+  };
 
   const usagePercentage = (todayUsage / dailyGoal) * 100;
   const isGoalMet = todayUsage <= dailyGoal;
@@ -99,6 +108,7 @@ const Index = () => {
               isGoalMet={isGoalMet}
               todayUsage={todayUsage}
               dailyGoal={dailyGoal}
+              emoji={currentEmoji}
             />
           </div>
 
@@ -155,9 +165,10 @@ const Index = () => {
       <div className="fixed bottom-6 right-6">
         <Button 
           size="lg" 
+          onClick={handleEmojiChange}
           className="rounded-full w-16 h-16 bg-gradient-to-r from-orange-400 to-amber-500 hover:from-orange-500 hover:to-amber-600 shadow-2xl"
         >
-          <span className="text-2xl">🦊</span>
+          <span className="text-2xl">{currentEmoji}</span>
         </Button>
       </div>
     </div>

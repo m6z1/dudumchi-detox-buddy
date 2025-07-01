@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,9 +8,10 @@ interface DudumchiCharacterProps {
   isGoalMet: boolean;
   todayUsage: number;
   dailyGoal: number;
+  emoji: string;
 }
 
-const DudumchiCharacter = ({ mood, isGoalMet, todayUsage, dailyGoal }: DudumchiCharacterProps) => {
+const DudumchiCharacter = ({ mood, isGoalMet, todayUsage, dailyGoal, emoji }: DudumchiCharacterProps) => {
   const [currentMood, setCurrentMood] = useState(mood);
   const [energy, setEnergy] = useState(85);
   const [happiness, setHappiness] = useState(90);
@@ -47,10 +47,6 @@ const DudumchiCharacter = ({ mood, isGoalMet, todayUsage, dailyGoal }: DudumchiC
     }
   };
 
-  const getFoxEmoji = () => {
-    return "🦊";
-  };
-
   const getMoodMessage = () => {
     if (isGoalMet) {
       return "와! 오늘 정말 잘하고 있어요! 디지털 디톡스 성공! 🎉";
@@ -70,7 +66,7 @@ const DudumchiCharacter = ({ mood, isGoalMet, todayUsage, dailyGoal }: DudumchiC
           <div className={`transition-transform duration-1000 ${isAnimating ? 'scale-110' : 'scale-100'}`}>
             <div className="bg-gradient-to-b from-orange-50 to-orange-100 rounded-lg p-6 border-2 border-orange-200 shadow-inner">
               <div className="text-8xl mb-4">
-                {getFoxEmoji()}
+                {emoji}
               </div>
             </div>
           </div>
