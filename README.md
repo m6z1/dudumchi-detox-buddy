@@ -1,73 +1,136 @@
-# Welcome to your Lovable project
+# 🐣 DuDumChi | 디지털디톡스를 통해 두둠치를 성장시켜보세요!
 
-## Project info
+## 🔗 배포 
+[두둠치 사용하기](https://lovable.dev/projects/11798edc-c461-4a4c-8298-b5165b9a5bde)
 
-**URL**: https://lovable.dev/projects/11798edc-c461-4a4c-8298-b5165b9a5bde
+## ✍️ 개요
 
-## How can I edit this code?
+디지털 디톡스 챌린지는 스마트폰 사용 습관을 개선하고, 집중력과 자기관리를 회복하기 위한 앱 프로토타입입니다. 사용자 페르소나에 기반한 맞춤형 시나리오, 실시간 알림, 보상 시스템, 캐릭터와의 상호작용을 통해 디지털 습관을 자연스럽게 바꿀 수 있도록 설계되었습니다.
 
-There are several ways of editing your application.
+## 👤 페르소나
 
-**Use Lovable**
+### 손취준 (25세)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/11798edc-c461-4a4c-8298-b5165b9a5bde) and start prompting.
+- **역할:** 취준생
+- **목표:** SNS, 유튜브 과몰입 방지 및 스마트폰 사용 습관 개선
+- **니즈:** 앱 시간 제한, 리포트 기능 통한 자기 통제
 
-Changes made via Lovable will be committed automatically to this repo.
+## 💬 사용자 시나리오
 
-**Use your preferred IDE**
+### 📌 시나리오: 이력서를 써야 하지만 숏폼에 갇힌 취준생
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### 상황
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+손취준은 이력서를 써야 하지만 유튜브, 인스타그램 등 숏폼 콘텐츠에 빠져 집중하지 못하고 있다.
 
-Follow these steps:
+### 흐름
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+1. **앱 실행 및 집중 앱 설정**
+    
+    손취준은 아침에 앱을 켜고 유튜브와 인스타그램을 ‘집중 방해 앱’으로 설정한다.
+    
+    하루 30분만 사용 가능하도록 제한을 건다.
+    
+2. **두둠치와의 교감**
+    
+    앱 메인 화면에서 캐릭터가 오늘 하루 디톡스 목표에 따라 반응할 것을 예고한다.
+    
+    손취준은 다마고치에게 인사를 건네고 디지털 디톡스를 다짐한다.
+    
+3. **앱 사용 제한 알림**
+    
+    스터디 중 유튜브를 실행하려고 할 때,
+    
+    “유튜브 사용 시간 10분 남았습니다. 두둠치가 절제를 기다리고 있어요!” 라는 알림을 받고 중단한다.
+    
+4. **디지털 성취 및 리워드**
+    
+    하루 목표를 초과하지 않자 리워드 포인트가 지급된다.
+    
+    포인트로 두둠치 간식이나 아이템을 구매할 수 있다.
+    
+5. **주간/월간 리포트 분석**
+    
+    앱은 주간 사용 패턴을 시각화하여 보여준다.
+    
+    집중 방해 앱 사용 시간이 줄었음을 확인하고 성취감을 느낀다.
+    
+6. **다마고치 성장 목표 설정**
+    
+    다음 주 목표를 설정하고 두둠치의 진화를 목표로 계속 디지털 디톡스를 실천한다.
+    
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## ✅ 핵심 기능
 
-# Step 3: Install the necessary dependencies.
-npm i
+- 스마트폰 사용 시간 목표 설정 (일일 제한, 특정 시간대 차단)
+- 앱별 사용 제한 (유튜브, 인스타그램 등)
+- 캐릭터(다마고치)와의 상호작용 및 성장 시스템
+- 사용 시 실시간 알림으로 주의 환기
+- 목표 달성 시 리워드 제공 (사료, 경험치, 아이템 등)
+- 주간/월간 사용 통계 리포트
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+## 🧩 사용자 스토리 & 인수 조건
 
-**Edit a file directly in GitHub**
+### 1. 디지털 디톡스 목표 설정 기능
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- **스토리:** “취준생으로서, 저는 하루 스마트폰 사용 시간이나 특정 시간대 앱 차단 목표를 설정하고 싶습니다.”
+- **인수 조건:**
+    - Given: 앱 설정 화면 진입
+    - When: 사용자 목표 입력 후 저장
+    - Then: 설정 정보가 저장되고 홈 화면에 표시됨
 
-**Use GitHub Codespaces**
+### 2. 학습 시간대 특정 앱 차단 기능
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- **스토리:** “집중 시간 동안 SNS 사용을 차단하고 싶습니다.”
+- **인수 조건:**
+    - Given: 차단 앱과 시간대 지정
+    - When: 해당 시간에 앱 실행 시도
+    - Then: 접근 차단 화면과 안내 메시지 표시
 
-## What technologies are used for this project?
+### 3. 캐릭터 상호작용 및 성장 시스템
 
-This project is built with:
+- **스토리:** “절제한 만큼 두둠치가 성장하길 바랍니다.”
+- **인수 조건:**
+    - Given: 디지털 디톡스 설정 완료
+    - When: 목표 달성 및 상호작용 수행
+    - Then: 캐릭터 감정/성장 상태 변화
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### 4. 실시간 알림 기능
 
-## How can I deploy this project?
+- **스토리:** “공부 도중 스마트폰에 손이 갈 때 알림으로 경고를 받고 싶습니다.”
+- **인수 조건:**
+    - Given: 집중 시간대 설정
+    - When: 방해 앱 사용 시도
+    - Then: 집중 시간 알림 표시
 
-Simply open [Lovable](https://lovable.dev/projects/11798edc-c461-4a4c-8298-b5165b9a5bde) and click on Share -> Publish.
+### 5. 리워드 시스템
 
-## Can I connect a custom domain to my Lovable project?
+- **스토리:** “목표를 달성하면 보상을 받아 디톡스를 지속하고 싶습니다.”
+- **인수 조건:**
+    - Given: 하루 목표 달성
+    - When: 조건 만족 시
+    - Then: 리워드(사료, 포인트, 경험치) 제공
 
-Yes, you can!
+### 6. 주간/월간 리포트 기능
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+- **스토리:** “내가 얼마나 잘 실천했는지 수치로 확인하고 싶습니다.”
+- **인수 조건:**
+    - Given: 데이터가 축적된 상태
+    - When: 리포트 보기 버튼 클릭
+    - Then: 앱 사용 시간, 앱별 사용량, 달성률을 시각적으로 제공
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+---
+
+## 🌟 핵심 가치 제안
+
+1. **즉각적 자극을 줄이고, 장기적 몰입을 유도**
+    
+    실시간 피드백과 목표 설정으로 스스로 제어할 수 있도록 돕습니다.
+    
+2. **캐릭터 기반 행동 변화 유도**
+    
+    캐릭터가 사용자 습관에 따라 반응하며 감정적 몰입을 유도합니다.
+    
+3. **리워드 기반 습관 형성**
+    
+    디지털 절제 행동이 보상으로 이어지며 지속 동기를 제공합니다.
