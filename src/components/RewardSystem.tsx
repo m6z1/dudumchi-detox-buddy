@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,11 +9,11 @@ interface RewardSystemProps {
   points: number;
   setPoints: (points: number) => void;
   isGoalMet: boolean;
+  purchasedItems: string[];
+  setPurchasedItems: (items: string[]) => void;
 }
 
-const RewardSystem = ({ points, setPoints, isGoalMet }: RewardSystemProps) => {
-  const [purchasedItems, setPurchasedItems] = useState<string[]>([]);
-
+const RewardSystem = ({ points, setPoints, isGoalMet, purchasedItems, setPurchasedItems }: RewardSystemProps) => {
   const rewardItems = [
     { id: 'banana', name: '바나나 간식', cost: 50, emoji: '🍌', description: '두둠치가 좋아하는 간식' },
     { id: 'toy', name: '장난감 공', cost: 100, emoji: '🎾', description: '두둠치와 놀 수 있는 장난감' },
@@ -39,7 +38,7 @@ const RewardSystem = ({ points, setPoints, isGoalMet }: RewardSystemProps) => {
   ];
 
   const purchaseItem = (item: typeof rewardItems[0]) => {
-    if (points >= item.cost) {
+    if (points >= item.cost && !purchasedItems.includes(item.id)) {
       setPoints(points - item.cost);
       setPurchasedItems([...purchasedItems, item.id]);
     }
