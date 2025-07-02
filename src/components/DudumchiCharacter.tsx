@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -56,37 +57,37 @@ const DudumchiCharacter = ({ mood, isGoalMet, todayUsage, dailyGoal, emoji }: Du
   };
 
   return (
-    <Card className="bg-gradient-to-br from-orange-100 to-amber-100 border-orange-200 shadow-xl">
-      <CardHeader>
-        <CardTitle className="text-center text-orange-800">두둠치와 함께해요!</CardTitle>
+    <Card className="bg-gradient-to-br from-orange-100 to-amber-100 border-orange-200 shadow-lg">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-center text-orange-800 text-lg">두둠치와 함께해요!</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-3">
         {/* Fox Character Display */}
         <div className="text-center">
           <div className={`transition-transform duration-1000 ${isAnimating ? 'scale-110' : 'scale-100'}`}>
-            <div className="bg-gradient-to-b from-orange-50 to-orange-100 rounded-lg p-6 border-2 border-orange-200 shadow-inner">
-              <div className="text-8xl mb-4">
+            <div className="bg-gradient-to-b from-orange-50 to-orange-100 rounded-lg p-4 border-2 border-orange-200 shadow-inner">
+              <div className="text-6xl mb-2">
                 {emoji}
               </div>
             </div>
           </div>
-          <div className="mt-4 p-3 bg-white/70 rounded-lg border border-orange-200">
-            <p className="text-sm text-orange-800 font-medium">
+          <div className="mt-3 p-2 bg-white/70 rounded-lg border border-orange-200">
+            <p className="text-xs text-orange-800 font-medium">
               {getMoodMessage()}
             </p>
           </div>
         </div>
 
         {/* Status Bars */}
-        <div className="space-y-3">
-          <div className="flex items-center gap-3">
-            <Heart className="w-5 h-5 text-red-500" />
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <Heart className="w-4 h-4 text-red-500" />
             <div className="flex-1">
-              <div className="flex justify-between text-sm mb-1">
+              <div className="flex justify-between text-xs mb-1">
                 <span>행복도</span>
                 <span>{happiness}%</span>
               </div>
-              <div className="w-full bg-gray-300 rounded h-3 border border-gray-400">
+              <div className="w-full bg-gray-300 rounded h-2 border border-gray-400">
                 <div 
                   className="bg-gradient-to-r from-pink-400 to-red-400 h-full transition-all duration-500 rounded"
                   style={{ width: `${happiness}%` }}
@@ -95,14 +96,14 @@ const DudumchiCharacter = ({ mood, isGoalMet, todayUsage, dailyGoal, emoji }: Du
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Zap className="w-5 h-5 text-yellow-500" />
+          <div className="flex items-center gap-2">
+            <Zap className="w-4 h-4 text-yellow-500" />
             <div className="flex-1">
-              <div className="flex justify-between text-sm mb-1">
+              <div className="flex justify-between text-xs mb-1">
                 <span>에너지</span>
                 <span>{energy}%</span>
               </div>
-              <div className="w-full bg-gray-300 rounded h-3 border border-gray-400">
+              <div className="w-full bg-gray-300 rounded h-2 border border-gray-400">
                 <div 
                   className="bg-gradient-to-r from-yellow-400 to-orange-400 h-full transition-all duration-500 rounded"
                   style={{ width: `${energy}%` }}
@@ -111,14 +112,14 @@ const DudumchiCharacter = ({ mood, isGoalMet, todayUsage, dailyGoal, emoji }: Du
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Star className="w-5 h-5 text-blue-500" />
+          <div className="flex items-center gap-2">
+            <Star className="w-4 h-4 text-blue-500" />
             <div className="flex-1">
-              <div className="flex justify-between text-sm mb-1">
+              <div className="flex justify-between text-xs mb-1">
                 <span>성장도</span>
                 <span>{growth}%</span>
               </div>
-              <div className="w-full bg-gray-300 rounded h-3 border border-gray-400">
+              <div className="w-full bg-gray-300 rounded h-2 border border-gray-400">
                 <div 
                   className="bg-gradient-to-r from-blue-400 to-purple-400 h-full transition-all duration-500 rounded"
                   style={{ width: `${growth}%` }}
@@ -129,12 +130,12 @@ const DudumchiCharacter = ({ mood, isGoalMet, todayUsage, dailyGoal, emoji }: Du
         </div>
 
         {/* Action Buttons */}
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-3 gap-1">
           <Button 
             variant="outline" 
             size="sm"
             onClick={() => handleInteraction('feed')}
-            className="bg-orange-50 border-orange-300 hover:bg-orange-100 text-xs"
+            className="bg-orange-50 border-orange-300 hover:bg-orange-100 text-xs h-8"
           >
             🍌 먹이주기
           </Button>
@@ -142,7 +143,7 @@ const DudumchiCharacter = ({ mood, isGoalMet, todayUsage, dailyGoal, emoji }: Du
             variant="outline" 
             size="sm"
             onClick={() => handleInteraction('play')}
-            className="bg-amber-50 border-amber-300 hover:bg-amber-100 text-xs"
+            className="bg-amber-50 border-amber-300 hover:bg-amber-100 text-xs h-8"
           >
             🎾 놀아주기
           </Button>
@@ -150,7 +151,7 @@ const DudumchiCharacter = ({ mood, isGoalMet, todayUsage, dailyGoal, emoji }: Du
             variant="outline" 
             size="sm"
             onClick={() => handleInteraction('pet')}
-            className="bg-yellow-50 border-yellow-300 hover:bg-yellow-100 text-xs"
+            className="bg-yellow-50 border-yellow-300 hover:bg-yellow-100 text-xs h-8"
           >
             👋 쓰다듬기
           </Button>
@@ -158,7 +159,7 @@ const DudumchiCharacter = ({ mood, isGoalMet, todayUsage, dailyGoal, emoji }: Du
 
         {/* Daily Achievement */}
         <div className="text-center">
-          <div className={`inline-flex items-center gap-2 px-3 py-1 border-2 text-sm font-medium rounded ${
+          <div className={`inline-flex items-center gap-1 px-2 py-1 border-2 text-xs font-medium rounded ${
             isGoalMet 
               ? 'bg-green-100 text-green-800 border-green-300' 
               : 'bg-orange-100 text-orange-800 border-orange-300'
