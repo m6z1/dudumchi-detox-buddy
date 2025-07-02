@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,15 +12,29 @@ interface RewardSystemProps {
   isGoalMet: boolean;
   purchasedItems: string[];
   setPurchasedItems: (items: string[]) => void;
+  consumableItems: {[key: string]: number};
+  setConsumableItems: (items: {[key: string]: number}) => void;
+  dailyRewardsClaimed: {[key: number]: Date | null};
+  setDailyRewardsClaimed: (rewards: {[key: number]: Date | null}) => void;
 }
 
-const RewardSystem = ({ points, setPoints, isGoalMet, purchasedItems, setPurchasedItems }: RewardSystemProps) => {
+const RewardSystem = ({ 
+  points, 
+  setPoints, 
+  isGoalMet, 
+  purchasedItems, 
+  setPurchasedItems,
+  consumableItems,
+  setConsumableItems,
+  dailyRewardsClaimed,
+  setDailyRewardsClaimed
+}: RewardSystemProps) => {
   const rewardItems = [
-    { id: 'banana', name: '바나나 간식', cost: 50, emoji: '🍌', description: '두둠치가 좋아하는 간식' },
-    { id: 'toy', name: '장난감 공', cost: 100, emoji: '🎾', description: '두둠치와 놀 수 있는 장난감' },
-    { id: 'hat', name: '귀여운 모자', cost: 150, emoji: '🎩', description: '두둠치를 꾸며줄 액세서리' },
-    { id: 'house', name: '작은 집', cost: 300, emoji: '🏠', description: '두둠치를 위한 아늑한 집' },
-    { id: 'crown', name: '황금 왕관', cost: 500, emoji: '👑', description: '최고급 액세서리' },
+    { id: 'banana', name: '바나나 간식', cost: 50, emoji: '🍌', description: '두둠치가 좋아하는 간식', type: 'consumable' },
+    { id: 'toy', name: '장난감 공', cost: 100, emoji: '🎾', description: '두둠치와 놀 수 있는 장난감', type: 'consumable' },
+    { id: 'hat', name: '귀여운 모자', cost: 150, emoji: '🎩', description: '두둠치를 꾸며줄 액세서리', type: 'wearable' },
+    { id: 'house', name: '작은 집', cost: 300, emoji: '🏠', description: '두둠치를 위한 아늑한 집', type: 'wearable' },
+    { id: 'crown', name: '황금 왕관', cost: 500, emoji: '👑', description: '최고급 액세서리', type: 'wearable' },
   ];
 
   const achievements = [
@@ -30,29 +45,53 @@ const RewardSystem = ({ points, setPoints, isGoalMet, purchasedItems, setPurchas
   ];
 
   const dailyRewards = [
-    { day: 1, reward: 20, claimed: true },
-    { day: 2, reward: 30, claimed: true },
-    { day: 3, reward: 40, claimed: false },
-    { day: 4, reward: 50, claimed: false },
-    { day: 5, reward: 60, claimed: false },
+    { day: 1, reward: 20 },
+    { day: 2, reward: 30 },
+    { day: 3, reward: 40 },
+    { day: 4, reward: 50 },
+    { day: 5, reward: 60 },
   ];
 
   const purchaseItem = (item: typeof rewardItems[0]) => {
-    if (points >= item.cost && !purchasedItems.includes(item.id)) {
+    if (points >= item.cost) {
       setPoints(points - item.cost);
-      setPurchasedItems([...purchasedItems, item.id]);
+      
+      if (item.type === 'consumable') {
+        // Add to consumable items inventory
+        const newConsumableItems = { ...consumableItems };
+        newConsumableItems[item.id] = (newConsumableItems[item.id] || 0) + 1;
+        setConsumableItems(newConsumableItems);
+      } else {
+        // Add to purchased items for wearables
+        if (!purchasedItems.includes(item.id)) {
+          setPurchasedItems([...purchasedItems, item.id]);
+        }
+      }
     }
   };
 
+  const canClaimDailyReward = (day: number) => {
+    const lastClaimed = dailyRewardsClaimed[day];
+    if (!lastClaimed) return true;
+    
+    const now = new Date();
+    const timeDiff = now.getTime() - lastClaimed.getTime();
+    const hoursDiff = timeDiff / (1000 * 3600);
+    
+    return hoursDiff >= 24;
+  };
+
   const claimDailyReward = (reward: typeof dailyRewards[0]) => {
-    if (!reward.claimed && isGoalMet) {
+    if (isGoalMet && canClaimDailyReward(reward.day)) {
       setPoints(points + reward.reward);
-      // Update claimed status (in real app, this would be persisted)
+      const newDailyRewardsClaimed = { ...dailyRewardsClaimed };
+      newDailyRewardsClaimed[reward.day] = new Date();
+      setDailyRewardsClaimed(newDailyRewardsClaimed);
     }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-h-[60vh] overflow-y-auto">
       {/* Points Display */}
       <Card className="bg-gradient-to-r from-yellow-100 to-orange-100 border-yellow-200">
         <CardContent className="pt-6">
@@ -79,26 +118,35 @@ const RewardSystem = ({ points, setPoints, isGoalMet, purchasedItems, setPurchas
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {rewardItems.map((item) => (
-              <div 
-                key={item.id} 
-                className={`p-4 rounded-lg border-2 transition-all ${
-                  purchasedItems.includes(item.id) 
-                    ? 'bg-green-50 border-green-200' 
-                    : 'bg-white border-gray-200 hover:border-orange-200'
-                }`}
-              >
-                <div className="text-center">
-                  <div className="text-3xl mb-2">{item.emoji}</div>
-                  <div className="font-medium text-gray-800">{item.name}</div>
-                  <div className="text-sm text-gray-600 mb-3">{item.description}</div>
-                  <div className="flex items-center justify-between">
-                    <Badge variant="secondary" className="bg-orange-100 text-orange-800">
-                      {item.cost}P
-                    </Badge>
-                    {purchasedItems.includes(item.id) ? (
-                      <Badge className="bg-green-100 text-green-800">구매완료</Badge>
-                    ) : (
+            {rewardItems.map((item) => {
+              const isConsumable = item.type === 'consumable';
+              const consumableCount = consumableItems[item.id] || 0;
+              const isPurchased = purchasedItems.includes(item.id);
+              
+              return (
+                <div 
+                  key={item.id} 
+                  className={`p-4 rounded-lg border-2 transition-all ${
+                    (isConsumable && consumableCount > 0) || (!isConsumable && isPurchased)
+                      ? 'bg-green-50 border-green-200' 
+                      : 'bg-white border-gray-200 hover:border-orange-200'
+                  }`}
+                >
+                  <div className="text-center">
+                    <div className="text-3xl mb-2">{item.emoji}</div>
+                    <div className="font-medium text-gray-800">{item.name}</div>
+                    <div className="text-sm text-gray-600 mb-3">{item.description}</div>
+                    
+                    {isConsumable && consumableCount > 0 && (
+                      <div className="mb-2">
+                        <Badge className="bg-blue-100 text-blue-800">보유: {consumableCount}개</Badge>
+                      </div>
+                    )}
+                    
+                    <div className="flex items-center justify-between">
+                      <Badge variant="secondary" className="bg-orange-100 text-orange-800">
+                        {item.cost}P
+                      </Badge>
                       <Button 
                         size="sm"
                         onClick={() => purchaseItem(item)}
@@ -107,11 +155,11 @@ const RewardSystem = ({ points, setPoints, isGoalMet, purchasedItems, setPurchas
                       >
                         구매
                       </Button>
-                    )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </CardContent>
       </Card>
@@ -169,34 +217,41 @@ const RewardSystem = ({ points, setPoints, isGoalMet, purchasedItems, setPurchas
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-5 gap-2">
-            {dailyRewards.map((reward) => (
-              <div 
-                key={reward.day}
-                className={`text-center p-3 rounded-lg border-2 transition-all ${
-                  reward.claimed 
-                    ? 'bg-green-50 border-green-200' 
-                    : reward.day === 3 && isGoalMet
-                    ? 'bg-yellow-50 border-yellow-300 animate-pulse' 
-                    : 'bg-gray-50 border-gray-200'
-                }`}
-              >
-                <div className="text-sm text-gray-600 mb-1">Day {reward.day}</div>
-                <div className="text-lg font-bold text-orange-600">{reward.reward}P</div>
-                {reward.claimed ? (
-                  <div className="text-xs text-green-600 mt-1">✅ 획득</div>
-                ) : reward.day === 3 && isGoalMet ? (
-                  <Button 
-                    size="sm" 
-                    className="text-xs mt-1 h-6 bg-yellow-400 hover:bg-yellow-500"
-                    onClick={() => claimDailyReward(reward)}
-                  >
-                    받기
-                  </Button>
-                ) : (
-                  <div className="text-xs text-gray-400 mt-1">대기중</div>
-                )}
-              </div>
-            ))}
+            {dailyRewards.map((reward) => {
+              const isClaimed = dailyRewardsClaimed[reward.day] !== undefined && dailyRewardsClaimed[reward.day] !== null;
+              const canClaim = isGoalMet && canClaimDailyReward(reward.day);
+              
+              return (
+                <div 
+                  key={reward.day}
+                  className={`text-center p-3 rounded-lg border-2 transition-all ${
+                    isClaimed 
+                      ? 'bg-green-50 border-green-200' 
+                      : canClaim
+                      ? 'bg-yellow-50 border-yellow-300 animate-pulse' 
+                      : 'bg-gray-50 border-gray-200'
+                  }`}
+                >
+                  <div className="text-sm text-gray-600 mb-1">Day {reward.day}</div>
+                  <div className="text-lg font-bold text-orange-600">{reward.reward}P</div>
+                  {isClaimed ? (
+                    <div className="text-xs text-green-600 mt-1">✅ 획득</div>
+                  ) : canClaim ? (
+                    <Button 
+                      size="sm" 
+                      className="text-xs mt-1 h-6 bg-yellow-400 hover:bg-yellow-500"
+                      onClick={() => claimDailyReward(reward)}
+                    >
+                      받기
+                    </Button>
+                  ) : (
+                    <div className="text-xs text-gray-400 mt-1">
+                      {!canClaimDailyReward(reward.day) && isClaimed ? '24시간 대기' : '대기중'}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
           <div className="mt-4 p-3 bg-blue-50 rounded-lg">
             <p className="text-sm text-blue-800 text-center">

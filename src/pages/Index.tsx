@@ -2,14 +2,15 @@
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import DudumchiCharacter from "@/components/DudumchiCharacter";
 import GoalSetting from "@/components/GoalSetting";
 import StatsPanel from "@/components/StatsPanel";
 import RewardSystem from "@/components/RewardSystem";
 import NotificationPanel from "@/components/NotificationPanel";
-import { Smartphone, Target, BarChart3, Gift } from "lucide-react";
+import EmojiSelector from "@/components/EmojiSelector";
+import { Smartphone, Target, BarChart3, Gift, Menu } from "lucide-react";
 
 const Index = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -20,6 +21,10 @@ const Index = () => {
   const [currentEmoji, setCurrentEmoji] = useState('🦊');
   const [purchasedItems, setPurchasedItems] = useState<string[]>([]);
   const [equippedItems, setEquippedItems] = useState<{[key: string]: string}>({});
+  const [consumableItems, setConsumableItems] = useState<{[key: string]: number}>({});
+  const [dailyRewardsClaimed, setDailyRewardsClaimed] = useState<{[key: number]: Date | null}>({});
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isEmojiSelectorOpen, setIsEmojiSelectorOpen] = useState(false);
 
   const animalEmojis = ['🦊', '🐱', '🐶', '🐰', '🐹', '🐨', '🐼', '🐸', '🐯', '🦁'];
 
@@ -30,10 +35,9 @@ const Index = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const handleEmojiChange = () => {
-    const currentIndex = animalEmojis.indexOf(currentEmoji);
-    const nextIndex = (currentIndex + 1) % animalEmojis.length;
-    setCurrentEmoji(animalEmojis[nextIndex]);
+  const handleEmojiSelect = (emoji: string) => {
+    setCurrentEmoji(emoji);
+    setIsEmojiSelectorOpen(false);
   };
 
   const usagePercentage = (todayUsage / dailyGoal) * 100;
@@ -65,6 +69,102 @@ const Index = () => {
                 <Gift className="w-3 h-3 text-amber-600" />
                 <span className="font-medium text-amber-700 text-xs">{points}P</span>
               </div>
+              <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+                <SheetTrigger asChild>
+                  <Button size="sm" variant="outline" className="p-2">
+                    <Menu className="w-4 h-4" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="bottom" className="h-[80vh]">
+                  <SheetHeader>
+                    <SheetTitle>메뉴</SheetTitle>
+                  </SheetHeader>
+                  <div className="mt-4 space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <Sheet>
+                        <SheetTrigger asChild>
+                          <Button variant="outline" className="h-20 flex flex-col">
+                            <BarChart3 className="w-6 h-6 mb-1" />
+                            대시보드
+                          </Button>
+                        </SheetTrigger>
+                        <SheetContent side="bottom" className="h-[80vh]">
+                          <SheetHeader>
+                            <SheetTitle>대시보드</SheetTitle>
+                          </SheetHeader>
+                          <div className="mt-4">
+                            <StatsPanel />
+                          </div>
+                        </SheetContent>
+                      </Sheet>
+
+                      <Sheet>
+                        <SheetTrigger asChild>
+                          <Button variant="outline" className="h-20 flex flex-col">
+                            <Target className="w-6 h-6 mb-1" />
+                            목표설정
+                          </Button>
+                        </SheetTrigger>
+                        <SheetContent side="bottom" className="h-[80vh]">
+                          <SheetHeader>
+                            <SheetTitle>목표설정</SheetTitle>
+                          </SheetHeader>
+                          <div className="mt-4">
+                            <GoalSetting 
+                              dailyGoal={dailyGoal}
+                              setDailyGoal={setDailyGoal}
+                            />
+                          </div>
+                        </SheetContent>
+                      </Sheet>
+
+                      <Sheet>
+                        <SheetTrigger asChild>
+                          <Button variant="outline" className="h-20 flex flex-col">
+                            <Gift className="w-6 h-6 mb-1" />
+                            리워드
+                          </Button>
+                        </SheetTrigger>
+                        <SheetContent side="bottom" className="h-[80vh]">
+                          <SheetHeader>
+                            <SheetTitle>리워드</SheetTitle>
+                          </SheetHeader>
+                          <div className="mt-4">
+                            <RewardSystem 
+                              points={points}
+                              setPoints={setPoints}
+                              isGoalMet={isGoalMet}
+                              purchasedItems={purchasedItems}
+                              setPurchasedItems={setPurchasedItems}
+                              consumableItems={consumableItems}
+                              setConsumableItems={setConsumableItems}
+                              dailyRewardsClaimed={dailyRewardsClaimed}
+                              setDailyRewardsClaimed={setDailyRewardsClaimed}
+                            />
+                          </div>
+                        </SheetContent>
+                      </Sheet>
+
+                      <Sheet>
+                        <SheetTrigger asChild>
+                          <Button variant="outline" className="h-20 flex flex-col">
+                            <Smartphone className="w-6 h-6 mb-1" />
+                            알림
+                          </Button>
+                        </SheetTrigger>
+                        <SheetContent side="bottom" className="h-[80vh]">
+                          <SheetHeader>
+                            <SheetTitle>알림</SheetTitle>
+                          </SheetHeader>
+                          <div className="mt-4">
+                            <NotificationPanel />
+                          </div>
+                        </SheetContent>
+                      </Sheet>
+                    </div>
+                  </div>
+                </SheetContent>
+              </Sheet>
             </div>
           </div>
         </div>
@@ -111,65 +211,35 @@ const Index = () => {
           purchasedItems={purchasedItems}
           equippedItems={equippedItems}
           setEquippedItems={setEquippedItems}
+          consumableItems={consumableItems}
+          setConsumableItems={setConsumableItems}
         />
-
-        {/* Main Tabs */}
-        <Tabs defaultValue="dashboard" className="space-y-2">
-          <TabsList className="grid w-full grid-cols-4 bg-white/70 backdrop-blur-sm h-10">
-            <TabsTrigger value="dashboard" className="flex flex-col items-center gap-0.5 text-xs">
-              <BarChart3 className="w-3 h-3" />
-              대시보드
-            </TabsTrigger>
-            <TabsTrigger value="goals" className="flex flex-col items-center gap-0.5 text-xs">
-              <Target className="w-3 h-3" />
-              목표설정
-            </TabsTrigger>
-            <TabsTrigger value="rewards" className="flex flex-col items-center gap-0.5 text-xs">
-              <Gift className="w-3 h-3" />
-              리워드
-            </TabsTrigger>
-            <TabsTrigger value="notifications" className="flex flex-col items-center gap-0.5 text-xs">
-              <Smartphone className="w-3 h-3" />
-              알림
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="dashboard">
-            <StatsPanel />
-          </TabsContent>
-
-          <TabsContent value="goals">
-            <GoalSetting 
-              dailyGoal={dailyGoal}
-              setDailyGoal={setDailyGoal}
-            />
-          </TabsContent>
-
-          <TabsContent value="rewards">
-            <RewardSystem 
-              points={points}
-              setPoints={setPoints}
-              isGoalMet={isGoalMet}
-              purchasedItems={purchasedItems}
-              setPurchasedItems={setPurchasedItems}
-            />
-          </TabsContent>
-
-          <TabsContent value="notifications">
-            <NotificationPanel />
-          </TabsContent>
-        </Tabs>
       </div>
 
       {/* Floating Action Button */}
       <div className="fixed bottom-3 right-3">
-        <Button 
-          size="sm" 
-          onClick={handleEmojiChange}
-          className="rounded-full w-12 h-12 bg-gradient-to-r from-orange-400 to-amber-500 hover:from-orange-500 hover:to-amber-600 shadow-lg"
-        >
-          <span className="text-lg">{currentEmoji}</span>
-        </Button>
+        <Sheet open={isEmojiSelectorOpen} onOpenChange={setIsEmojiSelectorOpen}>
+          <SheetTrigger asChild>
+            <Button 
+              size="sm" 
+              className="rounded-full w-12 h-12 bg-gradient-to-r from-orange-400 to-amber-500 hover:from-orange-500 hover:to-amber-600 shadow-lg"
+            >
+              <span className="text-lg">{currentEmoji}</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="bottom" className="h-[50vh]">
+            <SheetHeader>
+              <SheetTitle>이모티콘 선택</SheetTitle>
+            </SheetHeader>
+            <div className="mt-4">
+              <EmojiSelector 
+                emojis={animalEmojis}
+                currentEmoji={currentEmoji}
+                onEmojiSelect={handleEmojiSelect}
+              />
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
     </div>
   );

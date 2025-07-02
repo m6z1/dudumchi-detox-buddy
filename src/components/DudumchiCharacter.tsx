@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,6 +13,8 @@ interface DudumchiCharacterProps {
   purchasedItems: string[];
   equippedItems: {[key: string]: string};
   setEquippedItems: (items: {[key: string]: string}) => void;
+  consumableItems: {[key: string]: number};
+  setConsumableItems: (items: {[key: string]: number}) => void;
 }
 
 const DudumchiCharacter = ({ 
@@ -24,7 +25,9 @@ const DudumchiCharacter = ({
   emoji, 
   purchasedItems, 
   equippedItems, 
-  setEquippedItems 
+  setEquippedItems,
+  consumableItems,
+  setConsumableItems
 }: DudumchiCharacterProps) => {
   const [currentMood, setCurrentMood] = useState(mood);
   const [energy, setEnergy] = useState(85);
@@ -34,8 +37,8 @@ const DudumchiCharacter = ({
   const [showInventory, setShowInventory] = useState(false);
 
   const rewardItems = [
-    { id: 'banana', name: '바나나 간식', emoji: '🍌', type: 'accessory' },
-    { id: 'toy', name: '장난감 공', emoji: '🎾', type: 'accessory' },
+    { id: 'banana', name: '바나나 간식', emoji: '🍌', type: 'consumable' },
+    { id: 'toy', name: '장난감 공', emoji: '🎾', type: 'consumable' },
     { id: 'hat', name: '귀여운 모자', emoji: '🎩', type: 'hat' },
     { id: 'house', name: '작은 집', emoji: '🏠', type: 'background' },
     { id: 'crown', name: '황금 왕관', emoji: '👑', type: 'hat' },
@@ -82,6 +85,34 @@ const DudumchiCharacter = ({
     
     setEquippedItems(newEquippedItems);
   };
+
+  const handleUseConsumable = (itemId: string) => {
+    const currentCount = consumableItems[itemId] || 0;
+    if (currentCount > 0) {
+      const newConsumableItems = { ...consumableItems };
+      newConsumableItems[itemId] = currentCount - 1;
+      setConsumableItems(newConsumableItems);
+      
+      // Apply consumable effects
+      if (itemId === 'banana') {
+        setEnergy(Math.min(100, energy + 15));
+        setHappiness(Math.min(100, happiness + 10));
+      } else if (itemId === 'toy') {
+        setHappiness(Math.min(100, happiness + 15));
+        setEnergy(Math.max(0, energy - 3));
+      }
+      
+      setIsAnimating(true);
+      setTimeout(() => setIsAnimating(false), 1000);
+    }
+  };
+
+  const wearableItems = purchasedItems.filter(itemId => {
+    const item = rewardItems.find(r => r.id === itemId);
+    return item && item.type !== 'consumable';
+  });
+
+  const availableConsumables = Object.entries(consumableItems).filter(([_, count]) => count > 0);
 
   const getMoodMessage = () => {
     if (isGoalMet) {
@@ -140,8 +171,33 @@ const DudumchiCharacter = ({
           </div>
         </div>
 
+        {/* Consumable Items */}
+        {availableConsumables.length > 0 && (
+          <div className="bg-white/80 rounded-lg p-2 border border-green-200">
+            <div className="text-xs font-medium text-green-800 mb-2 text-center">소비 아이템</div>
+            <div className="grid grid-cols-2 gap-1">
+              {availableConsumables.map(([itemId, count]) => {
+                const item = rewardItems.find(r => r.id === itemId);
+                if (!item) return null;
+                
+                return (
+                  <button
+                    key={itemId}
+                    onClick={() => handleUseConsumable(itemId)}
+                    className="p-2 rounded border bg-gray-50 border-gray-200 hover:bg-green-50 transition-all text-center"
+                  >
+                    <div className="text-lg">{item.emoji}</div>
+                    <div className="text-xs text-gray-600">{item.name}</div>
+                    <Badge className="bg-blue-100 text-blue-800 text-xs mt-1">{count}개</Badge>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         {/* Inventory Button */}
-        {purchasedItems.length > 0 && (
+        {wearableItems.length > 0 && (
           <div className="text-center">
             <Button
               size="sm"
@@ -150,17 +206,17 @@ const DudumchiCharacter = ({
               className="bg-purple-50 border-purple-300 hover:bg-purple-100 text-xs h-7"
             >
               <Package className="w-3 h-3 mr-1" />
-              아이템 착용 ({purchasedItems.length})
+              착용 아이템 ({wearableItems.length})
             </Button>
           </div>
         )}
 
         {/* Inventory Display */}
-        {showInventory && purchasedItems.length > 0 && (
+        {showInventory && wearableItems.length > 0 && (
           <div className="bg-white/80 rounded-lg p-2 border border-purple-200">
-            <div className="text-xs font-medium text-purple-800 mb-2 text-center">보유 아이템</div>
+            <div className="text-xs font-medium text-purple-800 mb-2 text-center">착용 가능 아이템</div>
             <div className="grid grid-cols-3 gap-1">
-              {purchasedItems.map((itemId) => {
+              {wearableItems.map((itemId) => {
                 const item = rewardItems.find(r => r.id === itemId);
                 if (!item) return null;
                 
