@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -143,19 +142,7 @@ const Index = () => {
       </div>
 
       {/* Bottom Navigation */}
-      <BottomNavigation
-        dailyGoal={dailyGoal}
-        setDailyGoal={setDailyGoal}
-        points={points}
-        setPoints={setPoints}
-        isGoalMet={isGoalMet}
-        purchasedItems={purchasedItems}
-        setPurchasedItems={setPurchasedItems}
-        consumableItems={consumableItems}
-        setConsumableItems={setConsumableItems}
-        dailyRewardsClaimed={dailyRewardsClaimed}
-        setDailyRewardsClaimed={setDailyRewardsClaimed}
-      />
+      <BottomNavigation />
     </div>
   );
 };
