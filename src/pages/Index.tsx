@@ -5,12 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import DudumchiCharacter from "@/components/DudumchiCharacter";
-import GoalSetting from "@/components/GoalSetting";
-import StatsPanel from "@/components/StatsPanel";
-import RewardSystem from "@/components/RewardSystem";
-import NotificationPanel from "@/components/NotificationPanel";
 import EmojiSelector from "@/components/EmojiSelector";
-import { Smartphone, Target, BarChart3, Gift, Menu } from "lucide-react";
+import BottomNavigation from "@/components/BottomNavigation";
+import { Smartphone, Gift } from "lucide-react";
 
 const Index = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -23,7 +20,6 @@ const Index = () => {
   const [equippedItems, setEquippedItems] = useState<{[key: string]: string}>({});
   const [consumableItems, setConsumableItems] = useState<{[key: string]: number}>({});
   const [dailyRewardsClaimed, setDailyRewardsClaimed] = useState<{[key: number]: Date | null}>({});
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEmojiSelectorOpen, setIsEmojiSelectorOpen] = useState(false);
 
   const animalEmojis = ['🦊', '🐱', '🐶', '🐰', '🐹', '🐨', '🐼', '🐸', '🐯', '🦁'];
@@ -44,7 +40,7 @@ const Index = () => {
   const isGoalMet = todayUsage <= dailyGoal;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-amber-50 w-full max-w-sm mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-amber-50 w-full max-w-sm mx-auto pb-16">
       {/* Header */}
       <div className="bg-white/80 backdrop-blur-md border-b border-orange-100 sticky top-0 z-50">
         <div className="px-3 py-2">
@@ -69,102 +65,6 @@ const Index = () => {
                 <Gift className="w-3 h-3 text-amber-600" />
                 <span className="font-medium text-amber-700 text-xs">{points}P</span>
               </div>
-              <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-                <SheetTrigger asChild>
-                  <Button size="sm" variant="outline" className="p-2">
-                    <Menu className="w-4 h-4" />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="bottom" className="h-[80vh]">
-                  <SheetHeader>
-                    <SheetTitle>메뉴</SheetTitle>
-                  </SheetHeader>
-                  <div className="mt-4 space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      <Sheet>
-                        <SheetTrigger asChild>
-                          <Button variant="outline" className="h-20 flex flex-col">
-                            <BarChart3 className="w-6 h-6 mb-1" />
-                            대시보드
-                          </Button>
-                        </SheetTrigger>
-                        <SheetContent side="bottom" className="h-[80vh]">
-                          <SheetHeader>
-                            <SheetTitle>대시보드</SheetTitle>
-                          </SheetHeader>
-                          <div className="mt-4">
-                            <StatsPanel />
-                          </div>
-                        </SheetContent>
-                      </Sheet>
-
-                      <Sheet>
-                        <SheetTrigger asChild>
-                          <Button variant="outline" className="h-20 flex flex-col">
-                            <Target className="w-6 h-6 mb-1" />
-                            목표설정
-                          </Button>
-                        </SheetTrigger>
-                        <SheetContent side="bottom" className="h-[80vh]">
-                          <SheetHeader>
-                            <SheetTitle>목표설정</SheetTitle>
-                          </SheetHeader>
-                          <div className="mt-4">
-                            <GoalSetting 
-                              dailyGoal={dailyGoal}
-                              setDailyGoal={setDailyGoal}
-                            />
-                          </div>
-                        </SheetContent>
-                      </Sheet>
-
-                      <Sheet>
-                        <SheetTrigger asChild>
-                          <Button variant="outline" className="h-20 flex flex-col">
-                            <Gift className="w-6 h-6 mb-1" />
-                            리워드
-                          </Button>
-                        </SheetTrigger>
-                        <SheetContent side="bottom" className="h-[80vh]">
-                          <SheetHeader>
-                            <SheetTitle>리워드</SheetTitle>
-                          </SheetHeader>
-                          <div className="mt-4">
-                            <RewardSystem 
-                              points={points}
-                              setPoints={setPoints}
-                              isGoalMet={isGoalMet}
-                              purchasedItems={purchasedItems}
-                              setPurchasedItems={setPurchasedItems}
-                              consumableItems={consumableItems}
-                              setConsumableItems={setConsumableItems}
-                              dailyRewardsClaimed={dailyRewardsClaimed}
-                              setDailyRewardsClaimed={setDailyRewardsClaimed}
-                            />
-                          </div>
-                        </SheetContent>
-                      </Sheet>
-
-                      <Sheet>
-                        <SheetTrigger asChild>
-                          <Button variant="outline" className="h-20 flex flex-col">
-                            <Smartphone className="w-6 h-6 mb-1" />
-                            알림
-                          </Button>
-                        </SheetTrigger>
-                        <SheetContent side="bottom" className="h-[80vh]">
-                          <SheetHeader>
-                            <SheetTitle>알림</SheetTitle>
-                          </SheetHeader>
-                          <div className="mt-4">
-                            <NotificationPanel />
-                          </div>
-                        </SheetContent>
-                      </Sheet>
-                    </div>
-                  </div>
-                </SheetContent>
-              </Sheet>
             </div>
           </div>
         </div>
@@ -216,8 +116,8 @@ const Index = () => {
         />
       </div>
 
-      {/* Floating Action Button */}
-      <div className="fixed bottom-3 right-3">
+      {/* Floating Action Button for Emoji Selection */}
+      <div className="fixed bottom-20 right-3">
         <Sheet open={isEmojiSelectorOpen} onOpenChange={setIsEmojiSelectorOpen}>
           <SheetTrigger asChild>
             <Button 
@@ -241,6 +141,21 @@ const Index = () => {
           </SheetContent>
         </Sheet>
       </div>
+
+      {/* Bottom Navigation */}
+      <BottomNavigation
+        dailyGoal={dailyGoal}
+        setDailyGoal={setDailyGoal}
+        points={points}
+        setPoints={setPoints}
+        isGoalMet={isGoalMet}
+        purchasedItems={purchasedItems}
+        setPurchasedItems={setPurchasedItems}
+        consumableItems={consumableItems}
+        setConsumableItems={setConsumableItems}
+        dailyRewardsClaimed={dailyRewardsClaimed}
+        setDailyRewardsClaimed={setDailyRewardsClaimed}
+      />
     </div>
   );
 };
