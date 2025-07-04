@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,17 +9,33 @@ import EmojiSelector from "@/components/EmojiSelector";
 import BottomNavigation from "@/components/BottomNavigation";
 import { Smartphone, Gift } from "lucide-react";
 
-const Index = () => {
+interface IndexProps {
+  points: number;
+  setPoints: (points: number) => void;
+  purchasedItems: string[];
+  setPurchasedItems: (items: string[]) => void;
+  consumableItems: {[key: string]: number};
+  setConsumableItems: (items: {[key: string]: number}) => void;
+  dailyRewardsClaimed: {[key: number]: Date | null};
+  setDailyRewardsClaimed: (rewards: {[key: number]: Date | null}) => void;
+}
+
+const Index = ({ 
+  points, 
+  setPoints, 
+  purchasedItems, 
+  setPurchasedItems, 
+  consumableItems, 
+  setConsumableItems, 
+  dailyRewardsClaimed, 
+  setDailyRewardsClaimed 
+}: IndexProps) => {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [todayUsage, setTodayUsage] = useState(3.2); // hours
-  const [dailyGoal, setDailyGoal] = useState(4); // hours
+  const [todayUsage, setTodayUsage] = useState(1.5); // hours
+  const [dailyGoal, setDailyGoal] = useState(2); // hours - changed to 2
   const [dudumchiMood, setDudumchiMood] = useState('happy');
-  const [points, setPoints] = useState(150);
   const [currentEmoji, setCurrentEmoji] = useState('🦊');
-  const [purchasedItems, setPurchasedItems] = useState<string[]>([]);
   const [equippedItems, setEquippedItems] = useState<{[key: string]: string}>({});
-  const [consumableItems, setConsumableItems] = useState<{[key: string]: number}>({});
-  const [dailyRewardsClaimed, setDailyRewardsClaimed] = useState<{[key: number]: Date | null}>({});
   const [isEmojiSelectorOpen, setIsEmojiSelectorOpen] = useState(false);
 
   const animalEmojis = ['🦊', '🐱', '🐶', '🐰', '🐹', '🐨', '🐼', '🐸', '🐯', '🦁'];

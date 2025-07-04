@@ -11,12 +11,11 @@ import Goals from "./pages/Goals";
 import Rewards from "./pages/Rewards";
 import Notifications from "./pages/Notifications";
 import NotFound from "./pages/NotFound";
-import BottomNavigation from "./components/BottomNavigation";
 
 const queryClient = new QueryClient();
 
 const App = () => {
-  const [dailyGoal, setDailyGoal] = useState(4);
+  const [dailyGoal, setDailyGoal] = useState(2); // Changed to 2 hours
   const [points, setPoints] = useState(150);
   const [purchasedItems, setPurchasedItems] = useState<string[]>([]);
   const [consumableItems, setConsumableItems] = useState<{[key: string]: number}>({});
@@ -32,7 +31,21 @@ const App = () => {
         <BrowserRouter>
           <div className="relative">
             <Routes>
-              <Route path="/" element={<Index />} />
+              <Route 
+                path="/" 
+                element={
+                  <Index 
+                    points={points}
+                    setPoints={setPoints}
+                    purchasedItems={purchasedItems}
+                    setPurchasedItems={setPurchasedItems}
+                    consumableItems={consumableItems}
+                    setConsumableItems={setConsumableItems}
+                    dailyRewardsClaimed={dailyRewardsClaimed}
+                    setDailyRewardsClaimed={setDailyRewardsClaimed}
+                  />
+                } 
+              />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route 
                 path="/goals" 
@@ -62,7 +75,6 @@ const App = () => {
               <Route path="/notifications" element={<Notifications />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
-            <BottomNavigation />
           </div>
         </BrowserRouter>
       </TooltipProvider>
