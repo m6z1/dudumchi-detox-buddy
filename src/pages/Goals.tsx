@@ -1,5 +1,6 @@
 
 import GoalSetting from "@/components/GoalSetting";
+import BottomNavigation from "@/components/BottomNavigation";
 
 interface GoalsProps {
   dailyGoal: number;
@@ -23,6 +24,8 @@ const Goals = ({ dailyGoal, setDailyGoal }: GoalsProps) => {
           setDailyGoal={setDailyGoal}
         />
       </div>
+      
+      <BottomNavigation />
     </div>
   );
 };

@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -53,7 +52,7 @@ const GoalSetting = ({ dailyGoal, setDailyGoal }: GoalSettingProps) => {
               <Slider
                 value={[dailyGoal]}
                 onValueChange={handleGoalChange}
-                max={12}
+                max={2}
                 min={1}
                 step={0.5}
                 className="w-full"
@@ -62,7 +61,7 @@ const GoalSetting = ({ dailyGoal, setDailyGoal }: GoalSettingProps) => {
             <div className="flex justify-between text-sm text-gray-600">
               <span>1시간</span>
               <span className="font-medium text-orange-600">{dailyGoal}시간</span>
-              <span>12시간</span>
+              <span>2시간</span>
             </div>
           </div>
           <div className="p-3 bg-orange-50 rounded-lg">
